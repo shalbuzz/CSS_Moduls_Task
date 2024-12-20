@@ -6,11 +6,11 @@ import ClockPage from "./pages/ClockPage";
 import './App.css';
 const App = ()=>{
   return(
-    <div className="container">
+    <div className="container1">
   <Router>
     <Header/>
     <Routes>
-      <Route path="/clock" element={<ClockPage/>}></Route>
+      <Route path="/" element={<ClockPage/>}></Route>
       <Route path="/stopWatch" element={<StopWatchPage/>}></Route>
       <Route path="/timer" element={<TimerPage/>}></Route>
     </Routes>
