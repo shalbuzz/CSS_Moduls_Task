@@ -24,6 +24,7 @@ const timerSlice = createSlice({
             state.minutes = 0;
             state.seconds = 0;
             state.isRunning = false;
+            state.measurements = [];
         },
         
         recordMeasurement: (state) => {
