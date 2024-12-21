@@ -1,13 +1,13 @@
 import {  useEffect } from "react";
 import {useDispatch, useSelector} from 'react-redux';
-import { start, stop, reset, tick, recordMeasurement } from '../redux/timerSlice';
+import { start, stop, reset, tick, recordMeasurement } from '../redux/stopWatchSlice';
 
 
 const StopWatch = ()=>{
     // const [time,setTime] = useState(0);
     // const [run,setRun] = useState(false);
     const dispatch = useDispatch();
-    const {hours,minutes,seconds,isRunning,measurements} = useSelector((state)=>state.timer)
+    const {hours,minutes,seconds,isRunning,measurements} = useSelector((state)=>state.stopWatch)
    
     useEffect(()=> {
         let interval;

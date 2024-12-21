@@ -1,13 +1,13 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { start, stop, reset,  decrementSeconds, incrementHours, decrementHours, incrementSeconds, incrementMinutes, decrementMinutes,recordMeasurement2 } from '../redux/timerSlice';
+import { start, stop, reset, recordMeasurement,incrementHours,decrementHours,incrementMinutes,decrementMinutes,incrementSeconds,decrementSeconds } from '../redux/timerSlice';
 const Timer = ()=>{
     const dispatch = useDispatch();
 
     // const [time,setTime] = useState(60);
     // const [run,setRun] = useState(false);
   //const {time,isRunning} = useSelector((state)=>state.timer)
-  const {hours,minutes,seconds,isRunning,measurements} = useSelector((state)=>state.timer)
+  
    
     // const incrementTime = (amount)=>{
     //     if(!run){
@@ -36,12 +36,15 @@ const Timer = ()=>{
 //     setTime(0);
 //  }
 
+
+const {hours,minutes,seconds,isRunning,measurements} = useSelector((state)=>state.timer)
+
     useEffect(()=>{
         if(isRunning && (seconds > 0 || minutes>0 || hours>0)){
             const interval =  setInterval(()=>{
                 // setTime((prev)=>prev - 1)
+                // dispatch(tick());
                 dispatch(decrementSeconds());
-                
             },1000)
             return ()=>clearInterval(interval);
         } else if( hours === 0 && minutes === 0 && seconds ===0 && isRunning){
@@ -88,7 +91,7 @@ const Timer = ()=>{
                     {isRunning ? 'Pause' : 'Start'}
                 </button>
                 <button className="btn-stop" onClick={() => dispatch(reset())}>Reset</button>
-                <button className="btn-stop" disabled={!isRunning} onClick={() => dispatch(recordMeasurement2())}>Recent</button>
+                <button className="btn-stop" disabled={!isRunning} onClick={() => dispatch(recordMeasurement())}>Recent</button>
             </div>
             <div className="measurements">
                 {measurements.length > 0 && (
