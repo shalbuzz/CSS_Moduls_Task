@@ -1,3 +1,6 @@
+
+/*Redux elave edulmisdi*/
+
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {

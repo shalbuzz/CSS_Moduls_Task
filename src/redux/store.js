@@ -1,3 +1,5 @@
+
+/*Redux elave edulmisdi*/
 import { configureStore } from '@reduxjs/toolkit'
 import timerReducer from './timerSlice';
 
