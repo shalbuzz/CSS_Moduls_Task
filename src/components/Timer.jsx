@@ -1,54 +1,28 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { start, stop, reset, recordMeasurement,incrementHours,decrementHours,incrementMinutes,decrementMinutes,incrementSeconds,decrementSeconds } from '../redux/timerSlice';
+// import {setRemainingTime, loadStateFromStorage } from '../redux/timerSlice';
 const Timer = ()=>{
     const dispatch = useDispatch();
 
     // const [time,setTime] = useState(60);
     // const [run,setRun] = useState(false);
-  //const {time,isRunning} = useSelector((state)=>state.timer)
-  
-   
-    // const incrementTime = (amount)=>{
-    //     if(!run){
-    //         // setTime((prev)=> prev + amount)
-    //         dispatch(setTime());
-    //     }
-
-        
-    // }
-
-    // const decrementTime = (amount)=>{
-    //     if(!run){
-    //         // setTime((prev)=>prev - amount)
-    //         dispatch(decrementTime());
-    //     }
-    //     if(time <= 0){
-    //         setTime(0)
-    //      }
-    // }
-
-    // const toggle = ()=>{
-    //     setRun(!run);
-    // }
-
-//  const resetTime = ()=>{
-//     setTime(0);
-//  }
+    //  const resetTime = ()=>{
+    //     setTime(0);
+    //  }
 
 
 const {hours,minutes,seconds,isRunning,measurements} = useSelector((state)=>state.timer)
-
-    useEffect(()=>{
+   useEffect(()=>{
         if(isRunning && (seconds > 0 || minutes>0 || hours>0)){
             const interval =  setInterval(()=>{
                 // setTime((prev)=>prev - 1)
-                // dispatch(tick());
                 dispatch(decrementSeconds());
             },1000)
             return ()=>clearInterval(interval);
         } else if( hours === 0 && minutes === 0 && seconds ===0 && isRunning){
             alert('Taymer bitdi')
+            dispatch(stop()); 
             
             // setRun(false)
         }
@@ -57,6 +31,7 @@ const {hours,minutes,seconds,isRunning,measurements} = useSelector((state)=>stat
     const handleStartStop = () => {
         if (isRunning) {
             dispatch(stop());
+            dispatch(recordMeasurement());
         } else {
             dispatch(start());
         }
@@ -69,7 +44,7 @@ const {hours,minutes,seconds,isRunning,measurements} = useSelector((state)=>stat
             <div className="timer-display">
                 <div className="time-block">
                     <button className="btn" disabled={isRunning} onClick={() => dispatch(incrementHours())}>+</button>
-                    {/* {isRunning ? '' :  (<button className="btn" disabled={isRunning} onClick={() => dispatch(incrementHours())}>+</button>)} */}
+                    { /*  + and - Gizletmek ucun varianti : {isRunning ? '' :  (<button className="btn" disabled={isRunning} onClick={() => dispatch(incrementHours())}>+</button>)} */}
                     <span>{String(hours).padStart(2, '0')}</span>
                     <button className="btn" disabled={isRunning} onClick={() => dispatch(decrementHours())}>-</button>
                 </div>
@@ -87,11 +62,11 @@ const {hours,minutes,seconds,isRunning,measurements} = useSelector((state)=>stat
                 </div>
             </div>
             <div className="controls">
-                <button className="btn-stop" onClick={handleStartStop}>
+                <button disabled={hours === 0 && minutes === 0 && seconds === 0 & !isRunning} className="btn-stop" onClick={handleStartStop}>
                     {isRunning ? 'Pause' : 'Start'}
                 </button>
                 <button className="btn-stop" onClick={() => dispatch(reset())}>Reset</button>
-                <button className="btn-stop" disabled={!isRunning} onClick={() => dispatch(recordMeasurement())}>Recent</button>
+                {/*  <button className="btn-stop" disabled={!isRunning} onClick={() => dispatch(recordMeasurement())}>Recent</button> */}
             </div>
             <div className="measurements">
                 {measurements.length > 0 && (
@@ -113,3 +88,39 @@ const {hours,minutes,seconds,isRunning,measurements} = useSelector((state)=>stat
     )
 }
 export default Timer;
+
+
+/* Eger isteyirsizse taymer qutaran kimi basqa saytlara kecdiyi zamanda islesin 
+useEffect(() => {
+    if (isRunning || hours > 0 || minutes > 0 || seconds > 0) {
+        localStorage.setItem(
+            "timerState",
+            JSON.stringify({
+                hours,
+                minutes,
+                seconds,
+                isRunning,
+                timestamp: Date.now(),
+            })
+        );
+    }
+}, [hours, minutes, seconds, isRunning]);
+
+
+useEffect(() => {
+    const savedState = localStorage.getItem("timerState");
+    if (savedState) {
+        const { hours, minutes, seconds, isRunning, timestamp } = JSON.parse(savedState);
+        const elapsedSeconds = Math.floor((Date.now() - timestamp) / 1000);
+        const totalSeconds = Math.max(0, hours * 3600 + minutes * 60 + seconds - elapsedSeconds);
+
+        
+        dispatch(setRemainingTime(totalSeconds));
+
+        
+        if (isRunning && totalSeconds > 0) {
+            dispatch(start());
+        }
+    }
+}, [dispatch]);
+*/

@@ -93,10 +93,11 @@ nav {
 }
 
 
-.btn-stop:hover {
-  background-color: #ddd;
+.btn-stop:disabled{
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
 }
-
 span{
   text-align: center;
   font-size: 40px;

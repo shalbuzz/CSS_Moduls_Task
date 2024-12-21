@@ -49,8 +49,21 @@ const stopwatchSlice = createSlice({
                 alert('Impossible to record measurement.');
             }
         },
+
+        /* LocalStorage ucun hemise qutaran kimi islesin gore::  
+        
+         loadStateFromStorage: (state, action) => {
+            const { hours, minutes, seconds, isRunning, measurements } = action.payload;
+            state.hours = hours;
+            state.minutes = minutes;
+            state.seconds = seconds;
+            state.isRunning = isRunning;
+            state.measurements = measurements || [];
+        },
+    },
+        */
     },
 });
-
+//export const { loadStateFromStorage}
 export const { start, stop, reset, tick, recordMeasurement } = stopwatchSlice.actions;
 export default stopwatchSlice.reducer;

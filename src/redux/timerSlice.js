@@ -13,6 +13,7 @@ const timerSlice = createSlice({
     initialState: initialTimerState,
     reducers: {
         start: (state) => {
+            
             state.isRunning = true;
         },
         stop: (state) => {
@@ -84,9 +85,24 @@ const timerSlice = createSlice({
                 state.hours -= 1;
             }
         },
+  /* LocalStorage ucun hemise qutaran kimi islesin gore::  
+        setRemainingTime: (state, action) => {
+            const totalSeconds = action.payload;
+            state.hours = Math.floor(totalSeconds / 3600);
+            state.minutes = Math.floor((totalSeconds % 3600) / 60);
+            state.seconds = totalSeconds % 60;
+        },
+        loadStateFromStorage: (state, action) => {
+            const { hours, minutes, seconds, isRunning } = action.payload;
+            state.hours = hours;
+            state.minutes = minutes;
+            state.seconds = seconds;
+            state.isRunning = isRunning;
+        },
+        */
     
     },
 });
-
+//export const {setRemainingTime , loadStateFromStorage}
 export const { start, stop, reset,recordMeasurement,incrementHours,decrementHours,incrementMinutes,decrementMinutes,incrementSeconds,decrementSeconds } = timerSlice.actions;
 export default timerSlice.reducer;
