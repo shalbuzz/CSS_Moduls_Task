@@ -29,6 +29,16 @@ const StopWatch = ()=>{
     //     setTime(0);
     //     setRun(false);
     // }
+
+
+    const handleRecordMeasurement = () => {
+        dispatch(recordMeasurement());
+    
+        // Ölçməni `alert()` ilə göstər
+        // alert(
+        //   `Ölçmə: ${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`
+        // );
+      };
     return(
         <div className="container">
       <h2>Saniyeolcen</h2>
@@ -43,7 +53,7 @@ const StopWatch = ()=>{
                     {isRunning ? 'Stop' : 'Start'}
       </button> 
       <button className="btn-stop" onClick={() => dispatch(reset())}>Reset</button>
-      <button className="btn-stop" disabled={!isRunning} onClick={() => dispatch(recordMeasurement())}>Daire</button>
+      <button className="btn-stop" disabled={!isRunning} onClick={handleRecordMeasurement}>Daire</button>
       </div>
       <div className="measurements">
       {measurements.length > 0 && <h3>Results:</h3>}
