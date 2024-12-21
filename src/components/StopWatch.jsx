@@ -1,36 +1,62 @@
-import {  useEffect, useState } from "react"
+import {  useEffect } from "react";
+import {useDispatch, useSelector} from 'react-redux';
+import { start, stop, reset, tick, recordMeasurement } from '../redux/timerSlice';
+
 
 const StopWatch = ()=>{
-    const [time,setTime] = useState(0);
-    const [run,setRun] = useState(false);
+    // const [time,setTime] = useState(0);
+    // const [run,setRun] = useState(false);
+    const dispatch = useDispatch();
+    const {hours,minutes,seconds,isRunning,measurements} = useSelector((state)=>state.timer)
    
     useEffect(()=> {
         let interval;
-        if (run) {
+        if (isRunning) {
              interval = setInterval(()=>{
-                setTime((prev)=>prev+1)
+                // setTime((prev)=>prev+1)
+                dispatch(tick());
             },1000)
         } else{
             clearInterval(interval)
         }
         return ()=> clearInterval(interval)
-      },[run])
+      },[isRunning,dispatch])
 
-      const toggle = ()=>{
-        setRun(!run)
-      }
-    const reset = ()=>{
-        setTime(0);
-        setRun(false);
-    }
+      // const toggle = ()=>{
+      //   setRun(!run)
+      // }
+    // const reset = ()=>{
+    //     setTime(0);
+    //     setRun(false);
+    // }
     return(
         <div className="container">
       <h2>Saniyeolcen</h2>
-      <p>{time}s</p>
+      <p>
+                {String(hours).padStart(2, '0')}:
+                {String(minutes).padStart(2, '0')}:
+                {String(seconds).padStart(2, '0')}
+      </p>
+      {/* <p>{hours} {minutes} {seconds}s</p> */}
       <div className="button-container">
-      <button  onClick={toggle}>{run ? "Dayandir" : "Basla"}</button>
-      <button onClick={reset}>Sifirla</button>
+      <button className="btn-stop" onClick={() => dispatch(isRunning ? stop() : start())}>
+                    {isRunning ? 'Stop' : 'Start'}
+      </button> 
+      <button className="btn-stop" onClick={() => dispatch(reset())}>Reset</button>
+      <button className="btn-stop" disabled={!isRunning} onClick={() => dispatch(recordMeasurement())}>Daire</button>
       </div>
+      <div className="measurements">
+      {measurements.length > 0 && <h3>Results:</h3>}
+                <ul>
+                    {measurements.map((m, index) => (
+                        <li key={index} className="result">
+                            {String(m.hours).padStart(2, '0')}:
+                            {String(m.minutes).padStart(2, '0')}:
+                            {String(m.seconds).padStart(2, '0')}
+                        </li>
+                    ))}
+                </ul>
+            </div>
     </div>
     )
 }
